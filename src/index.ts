@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const BRIDGE_LIFECYCLE_PROTOCOL_VERSION = 2 as const;
+export const BRIDGE_LIFECYCLE_PROTOCOL_VERSION = 3 as const;
 
 export const bridgeBrowserOriginSchema = z.string().url().superRefine((value, context) => {
   const url = new URL(value);
@@ -14,6 +14,21 @@ export const bridgeBrowserOriginSchema = z.string().url().superRefine((value, co
 export type BridgeBrowserOrigin = z.infer<typeof bridgeBrowserOriginSchema>;
 
 export const bridgeBrowserOriginsSchema = z.array(bridgeBrowserOriginSchema).max(8);
+
+export const bridgeDshViewerUrlSchema = z.string().url().superRefine((value, context) => {
+  const url = new URL(value);
+  if (url.protocol !== "http:" || (url.hostname !== "127.0.0.1" && url.hostname !== "localhost")) {
+    context.addIssue({ code: "custom", message: "DSH Viewer URL must use loopback HTTP" });
+  }
+  if (url.username !== "" || url.password !== "" || url.pathname !== "/" || url.hash !== "") {
+    context.addIssue({ code: "custom", message: "DSH Viewer URL must be a credential-free loopback root URL without a fragment" });
+  }
+  const keys = [...url.searchParams.keys()];
+  if (keys.some((key) => key !== "token") || url.searchParams.getAll("token").length > 1) {
+    context.addIssue({ code: "custom", message: "DSH Viewer URL may contain only one launch token" });
+  }
+});
+export type BridgeDshViewerUrl = z.infer<typeof bridgeDshViewerUrlSchema>;
 
 export const bridgeLifecycleStateSchema = z.enum([
   "STARTING",
@@ -45,6 +60,7 @@ export const bridgeLeaseSchema = z.object({
   acquiredAt: z.number().int().nonnegative(),
   expiresAt: z.number().int().positive(),
   browserOrigins: bridgeBrowserOriginsSchema,
+  dshViewerUrl: bridgeDshViewerUrlSchema.optional(),
 });
 export type BridgeLease = z.infer<typeof bridgeLeaseSchema>;
 
@@ -91,6 +107,7 @@ export const acquireBridgeLeaseRequestSchema = z.object({
   expectedBootId: z.string().uuid(),
   ttlMs: z.number().int().min(1_000).max(120_000),
   browserOrigins: bridgeBrowserOriginsSchema,
+  dshViewerUrl: bridgeDshViewerUrlSchema.optional(),
 });
 export type AcquireBridgeLeaseRequest = z.infer<typeof acquireBridgeLeaseRequestSchema>;
 
