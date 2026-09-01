@@ -50,6 +50,26 @@ describe("Bridge lifecycle protocol", () => {
     }
   });
 
+  it("accepts only a loopback root URL as the leased DSH Viewer target", () => {
+    const request = acquireBridgeLeaseRequestSchema.parse({
+      lifecycleProtocolVersion: BRIDGE_LIFECYCLE_PROTOCOL_VERSION,
+      expectedBootId: identity.bootId,
+      ttlMs: 15_000,
+      browserOrigins: ["http://127.0.0.1:23686"],
+      dshViewerUrl: "http://127.0.0.1:23686/?token=current",
+    });
+    expect(request.dshViewerUrl).toBe("http://127.0.0.1:23686/?token=current");
+    for (const dshViewerUrl of [
+      "https://example.com/?token=wrong",
+      "http://127.0.0.1:23686/conversation",
+      "http://127.0.0.1:23686/?other=value",
+      "http://127.0.0.1:23686/?token=one&token=two",
+      "http://127.0.0.1:23686/#surface",
+    ]) {
+      expect(() => acquireBridgeLeaseRequestSchema.parse({ ...request, dshViewerUrl })).toThrow();
+    }
+  });
+
   it("fences drains to the current boot identity", () => {
     expect(() => drainBridgeRequestSchema.parse({
       lifecycleProtocolVersion: BRIDGE_LIFECYCLE_PROTOCOL_VERSION,
