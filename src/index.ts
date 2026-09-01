@@ -1,6 +1,19 @@
 import { z } from "zod";
 
-export const BRIDGE_LIFECYCLE_PROTOCOL_VERSION = 1 as const;
+export const BRIDGE_LIFECYCLE_PROTOCOL_VERSION = 2 as const;
+
+export const bridgeBrowserOriginSchema = z.string().url().superRefine((value, context) => {
+  const url = new URL(value);
+  if (url.protocol !== "http:" || (url.hostname !== "127.0.0.1" && url.hostname !== "localhost")) {
+    context.addIssue({ code: "custom", message: "Browser origin must use loopback HTTP" });
+  }
+  if (url.origin !== value || url.username !== "" || url.password !== "") {
+    context.addIssue({ code: "custom", message: "Browser origin must not contain credentials, a path, query or fragment" });
+  }
+});
+export type BridgeBrowserOrigin = z.infer<typeof bridgeBrowserOriginSchema>;
+
+export const bridgeBrowserOriginsSchema = z.array(bridgeBrowserOriginSchema).max(8);
 
 export const bridgeLifecycleStateSchema = z.enum([
   "STARTING",
@@ -31,6 +44,7 @@ export const bridgeLeaseSchema = z.object({
   bootId: z.string().uuid(),
   acquiredAt: z.number().int().nonnegative(),
   expiresAt: z.number().int().positive(),
+  browserOrigins: bridgeBrowserOriginsSchema,
 });
 export type BridgeLease = z.infer<typeof bridgeLeaseSchema>;
 
@@ -76,6 +90,7 @@ export const acquireBridgeLeaseRequestSchema = z.object({
   lifecycleProtocolVersion: z.literal(BRIDGE_LIFECYCLE_PROTOCOL_VERSION),
   expectedBootId: z.string().uuid(),
   ttlMs: z.number().int().min(1_000).max(120_000),
+  browserOrigins: bridgeBrowserOriginsSchema,
 });
 export type AcquireBridgeLeaseRequest = z.infer<typeof acquireBridgeLeaseRequestSchema>;
 
