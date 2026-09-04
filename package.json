@@ -1,6 +1,6 @@
 {
   "name": "dsh-obsidian-bridge-protocol",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Shared lifecycle protocol for the Obsidian DeepHarness Bridge and DSH adapters.",
   "type": "module",
   "license": "MIT",
@@ -13,7 +13,7 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["lib", "README.md", "LICENSE"],
+  "files": ["lib", "CHANGELOG.md", "README.md", "LICENSE"],
   "scripts": {
     "build": "node -e \"fs.rmSync('lib',{recursive:true,force:true})\" && tsc -p tsconfig.build.json && tsdown --config-loader unrun --config tsdown.config.ts",
     "prepack": "pnpm build",
@@ -23,7 +23,7 @@
     "check": "pnpm typecheck && pnpm test && pnpm pack --dry-run --json"
   },
   "dependencies": {
-    "zod": "^4.4.3"
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
