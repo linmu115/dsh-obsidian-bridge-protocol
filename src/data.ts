@@ -5,6 +5,7 @@ export const STICKER_PROTOCOL_VERSION = 1 as const;
 export const PROTOCOL_VERSION = STICKER_PROTOCOL_VERSION;
 
 export const stableLogicalTargetShape = {
+  dshInstanceId: z.string().min(1).optional(),
   logicalSessionId: z.string().min(1).optional(),
   logicalAnchorId: z.string().min(1).optional(),
   legacySessionId: z.string().min(1).optional(),

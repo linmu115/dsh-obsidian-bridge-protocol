@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.3-rc2.1 — DSH 0.1.5-rc.2 (2026-09-12)
+
+10 tests passed. Add optional dshInstanceId to data/control contracts. Lifecycle v3, annotation v2 and sticker v1 stay compatible with historical records.
+
+
 ## 0.3.2 - Unreleased
 
 - Export neutral sticker/session-note/backlink/navigation schemas from `./data`,

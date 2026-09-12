@@ -40,3 +40,9 @@ describe("shared Bridge data protocol", () => {
     expect(parseBridgeMessage(citation)).toEqual(citation);
   });
 });
+
+it("keeps optional DSH instance identity without modifying historical data", () => {
+  expect(stickerBacklinkTargetSchema.parse({ ...target, dshInstanceId: "instance-rc2" })).toEqual({ ...target, dshInstanceId: "instance-rc2" });
+  expect(stickerBacklinkTargetSchema.parse(target)).not.toHaveProperty("dshInstanceId");
+  expect(() => stickerBacklinkTargetSchema.parse({ ...target, dshInstanceId: "" })).toThrow();
+});

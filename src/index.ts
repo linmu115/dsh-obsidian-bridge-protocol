@@ -89,6 +89,7 @@ export const bridgeControlHandshakeRequestSchema = z.object({
   lifecycleProtocolVersion: z.literal(BRIDGE_LIFECYCLE_PROTOCOL_VERSION),
   clientId: z.string().min(1).max(128),
   role: bridgeClientRoleSchema,
+  dshInstanceId: z.string().min(1).max(256).optional(),
   expectedBootId: z.string().uuid().optional(),
 });
 export type BridgeControlHandshakeRequest = z.infer<typeof bridgeControlHandshakeRequestSchema>;
