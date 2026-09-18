@@ -1,6 +1,6 @@
 {
   "name": "dsh-obsidian-bridge-protocol",
-  "version": "0.3.3-rc2.1",
+  "version": "0.4.0-rc2.1",
   "description": "Shared lifecycle protocol for the Obsidian DeepHarness Bridge and DSH adapters.",
   "type": "module",
   "license": "MIT",
@@ -15,7 +15,15 @@
       "types": "./lib/types/data.d.ts",
       "default": "./lib/data.js"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./binding": {
+      "types": "./lib/types/binding.d.ts",
+      "default": "./lib/binding.js"
+    },
+    "./discovery": {
+      "types": "./lib/types/discovery.d.ts",
+      "default": "./lib/discovery.js"
+    }
   },
   "files": [
     "lib",

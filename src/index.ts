@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { bindingControlFields } from './binding.ts';
+export * from './binding.ts';
 
 export const BRIDGE_LIFECYCLE_PROTOCOL_VERSION = 3 as const;
 
@@ -53,6 +55,7 @@ export const bridgeIdentitySchema = z.object({
 export type BridgeIdentity = z.infer<typeof bridgeIdentitySchema>;
 
 export const bridgeLeaseSchema = z.object({
+  ...bindingControlFields,
   leaseId: z.string().uuid(),
   clientId: z.string().min(1).max(128),
   role: bridgeClientRoleSchema,
@@ -86,6 +89,7 @@ export type BridgeOfflineStatus = z.infer<typeof bridgeOfflineStatusSchema>;
 export type ObservedBridgeStatus = BridgeStatus | BridgeOfflineStatus;
 
 export const bridgeControlHandshakeRequestSchema = z.object({
+  ...bindingControlFields,
   lifecycleProtocolVersion: z.literal(BRIDGE_LIFECYCLE_PROTOCOL_VERSION),
   clientId: z.string().min(1).max(128),
   role: bridgeClientRoleSchema,
@@ -95,6 +99,7 @@ export const bridgeControlHandshakeRequestSchema = z.object({
 export type BridgeControlHandshakeRequest = z.infer<typeof bridgeControlHandshakeRequestSchema>;
 
 export const bridgeControlHandshakeResponseSchema = z.object({
+  ...bindingControlFields,
   ...bridgeStatusSchema.shape,
   clientId: z.string().min(1).max(128),
   role: bridgeClientRoleSchema,
@@ -104,6 +109,7 @@ export const bridgeControlHandshakeResponseSchema = z.object({
 export type BridgeControlHandshakeResponse = z.infer<typeof bridgeControlHandshakeResponseSchema>;
 
 export const acquireBridgeLeaseRequestSchema = z.object({
+  ...bindingControlFields,
   lifecycleProtocolVersion: z.literal(BRIDGE_LIFECYCLE_PROTOCOL_VERSION),
   expectedBootId: z.string().uuid(),
   ttlMs: z.number().int().min(1_000).max(120_000),

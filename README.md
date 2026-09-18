@@ -86,3 +86,11 @@ pnpm pack --pack-destination .artifacts
 现有测试覆盖状态校验、本机 origin 和 Viewer 约束、目标页面身份、逻辑/旧身份保留及历史消息兼容。它们不替代 Bridge 服务的租约测试和两端实际点击验收。
 
 实现见 [控制协议](src/index.ts)和[数据协议](src/data.ts)，测试见[控制协议测试](tests/protocol.test.ts)和[数据协议测试](tests/data.test.ts)，版本变化见 [CHANGELOG](CHANGELOG.md)。
+
+## Vault binding and discovery (0.4.0-rc2.1)
+
+`./binding` exports bindingProtocolVersion 1 schemas, stable instance/profile targets, revisioned Vault binding snapshots, CAS/idempotent change requests, bound job routes and public identity contracts. `vault-instance-binding-v1` is required to opt in; unchanged lifecycle 3/sticker 1 versions alone do not imply multi-Vault support. Optional `vaultId` in legacy sticker records identifies only their direct note association, not global managed sticker ownership.
+
+`./discovery` is Node-only and exports `getBridgeDiscoveryDirectory`, `writeDiscoveryRecord`, `readDiscoveryRecords`, and `removeDiscoveryRecord`. Default storage is `~/.dsh/obsidian-bridge/discovery-v1`, overridable with `DSH_OBSIDIAN_DISCOVERY_DIR`. Publish only strict identity metadata: HTTP loopback origin, runtime boot/publisher identity, capabilities and bounded expiry. Authenticated Viewer URLs and tokens are rejected by the schemas. Readers discard expired, oversized, malformed and non-regular entries; conflicting stable identities are returned separately rather than selected. Entries are hints: consumers must verify live identity before connecting, and discovery never grants binding authority.
+
+Protocol verification: TypeScript/build and 13 tests across 3 files pass. Tests use temporary directories only. No user registry, Vault or deployed runtime is modified.

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0-rc2.1 — 2026-09-18
+
+Add versioned binding/discovery DTOs and a separate Node-only registry provider. Strict loopback metadata excludes credentials, expired/oversized entries and conflicting identities. Lifecycle 3 and sticker 1 remain unchanged; bindingProtocolVersion 1 and vault-instance-binding-v1 opt into explicit binding. Add optional Vault identity to legacy note associations and note/backlink operations.
+
 ## 0.3.3-rc2.1 — DSH 0.1.5-rc.2 (2026-09-12)
 
 10 tests passed. Add optional dshInstanceId to data/control contracts. Lifecycle v3, annotation v2 and sticker v1 stay compatible with historical records.

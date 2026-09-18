@@ -13,6 +13,8 @@ export const stableLogicalTargetShape = {
 };
 
 export const stickerSchema = z.object({
+  // Scope of the legacy direct note association, not the managed sticker itself.
+  vaultId: z.string().min(1).optional(),
   stickerId: z.string().uuid(),
   ...stableLogicalTargetShape,
   sessionId: z.string().min(1),
@@ -43,6 +45,7 @@ export const deepLinkActionSchema = z.object({
 });
 
 export const openNoteActionSchema = z.object({
+  vaultId: z.string().min(1).optional(),
   protocolVersion: z.literal(PROTOCOL_VERSION),
   type: z.literal("open-note"),
   actionId: z.string().uuid(),
@@ -53,6 +56,7 @@ export const openNoteActionSchema = z.object({
 });
 
 export const stickerBacklinkTargetSchema = z.object({
+  vaultId: z.string().min(1).optional(),
   stickerId: z.string().uuid(),
   ...stableLogicalTargetShape,
   sessionId: z.string().min(1),
@@ -61,6 +65,7 @@ export const stickerBacklinkTargetSchema = z.object({
 });
 
 export const stickerBacklinkSchema = z.object({
+  vaultId: z.string().min(1).optional(),
   notePath: z.string().min(1),
   line: z.number().int().nonnegative(),
   column: z.number().int().nonnegative().optional(),
@@ -97,6 +102,7 @@ export const resolvedCitationSchema = z.object({
 });
 
 export const sessionNoteDocumentSchema = z.object({
+  vaultId: z.string().min(1).optional(),
   protocolVersion: z.literal(PROTOCOL_VERSION),
   type: z.literal("session-note"),
   sessionId: z.string().min(1),

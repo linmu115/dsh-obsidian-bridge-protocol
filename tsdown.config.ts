@@ -1,7 +1,7 @@
 import type { UserConfig } from "tsdown";
 
 export default {
-  entry: { index: "src/index.ts", data: "src/data.ts" },
+  entry: { index: "src/index.ts", data: "src/data.ts", binding: "src/binding.ts", discovery: "src/discovery.ts" },
   outDir: "lib",
   format: ["esm"],
   platform: "neutral",
@@ -10,5 +10,5 @@ export default {
   dts: false,
   clean: false,
   // Consumers bundle Zod once alongside Core's annotation schemas.
-  deps: { neverBundle: ["zod"] },
+  deps: { neverBundle: ["zod", /^node:/] },
 } satisfies UserConfig;
