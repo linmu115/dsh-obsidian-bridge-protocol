@@ -1,3 +1,8 @@
+> **停止维护 / Archived — 2026-09-19**
+> 本仓库已被统一桥项目 [dsh-obsidian-bridge](https://github.com/linmu115/dsh-obsidian-bridge) 替代，不再发布更新或接受新功能。
+> 新问题和改动请转到新仓库。历史源码、许可证和以下旧版说明保留供回查，旧版安装说明不再作为当前推荐。
+> Obsidian 侧插件 [obsidian-deepharness-bridge](https://github.com/linmu115/obsidian-deepharness-bridge) 继续维护。Protocol 源码转到新仓库 `vendor/protocol`；Suite 仅保留历史组合规格。
+
 # DSH Obsidian Bridge Protocol
 
 当前版本 **0.3.3-rc2.1**，用于 **DSH 0.1.5-rc.2** 配套的 Obsidian 引用系统。这是共享类型与数据校验库，供 DSH 与 Obsidian 两端对同一条消息作一致解释；它本身没有界面，也不启动 Bridge 服务。
